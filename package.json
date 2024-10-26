@@ -5,10 +5,10 @@
   "scripts": {
 
   "dev": "cross-env NODE_ENV=development nodemon backend/server.js",
-  "start": "concurrently \"cross-env NODE_ENV=development npm run dev\" \"cd frontend && npm run dev\""
+  "start": "concurrently \"cross-env NODE_ENV=development npm run dev\" \"cd frontend && npm run dev\"",
+  "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
   
-},
-
+  },
   "keywords": [],
   "author": "",
   "type": "module",
@@ -28,7 +28,6 @@
     "concurrently": "^9.0.1",
     "cross-env": "^7.0.3",
     "esbuild": "^0.24.0",
-    "nodemon": "^3.1.7",
-    "serve": "^14.2.4"
+    "nodemon": "^3.1.7"
   }
 }
