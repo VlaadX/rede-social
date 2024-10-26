@@ -41,7 +41,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // Porta dinâmica para compatibilidade com o Render
-const PORT = process.env.PORT_BACK || 8000;
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Servidor ON na porta ${PORT}`);
     connectMongoDB();
