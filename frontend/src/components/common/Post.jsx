@@ -175,11 +175,11 @@ const Post = ({ post }) => {
 							{/* We're using Modal Component from DaisyUI */}
 							<dialog id={`comments_modal${post._id}`} className='modal border-none outline-none'>
 								<div className='modal-box rounded border border-gray-600'>
-									<h3 className='font-bold text-lg mb-4'>COMMENTS</h3>
+									<h3 className='font-bold text-lg mb-4'>Comentarios</h3>
 									<div className='flex flex-col gap-3 max-h-60 overflow-auto'>
 										{post.comments.length === 0 && (
 											<p className='text-sm text-slate-500'>
-												No comments yet 🤔 Be the first one 😉
+												Nenhum comentario 🤔 Seja o primeiro😉
 											</p>
 										)}
 										{post.comments.map((comment) => (
@@ -209,7 +209,7 @@ const Post = ({ post }) => {
 									>
 										<textarea
 											className='textarea w-full p-1 rounded text-md resize-none border focus:outline-none  border-gray-800'
-											placeholder='Add a comment...'
+											placeholder='Adicione um comentario...'
 											value={comment}
 											onChange={(e) => setComment(e.target.value)}
 										/>
