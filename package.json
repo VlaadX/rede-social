@@ -6,8 +6,10 @@
 
   "dev": "cross-env NODE_ENV=development nodemon backend/server.js",
   "start": "concurrently \"cross-env NODE_ENV=development npm run dev\" \"cd frontend && npm run dev\"",
-  "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
-  
+  "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
+  "start-front": "cd frontend && npm run dev"
+
+
   },
   "keywords": [],
   "author": "",
