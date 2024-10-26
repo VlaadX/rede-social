@@ -151,3 +151,20 @@ export const updateUser = async (req, res) => {
 		res.status(500).json({ error: error.message });
 	}
 };
+
+export const getAllFollowers = async (req, res) => {
+	const { username } = req.params;
+
+	try {
+		// Localiza o usuário pelo username e popula a lista de seguidores com informações básicas
+		const user = await User.findOne({ username }).populate("followers", "username fullName profileImg");
+
+		if (!user) return res.status(404).json({ message: "User not found" });
+
+		// Retorna a lista de seguidores
+		res.status(200).json(user.followers);
+	} catch (error) {
+		console.log("Error in getUserFollowers: ", error.message);
+		res.status(500).json({ error: error.message });
+	}
+};

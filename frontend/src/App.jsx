@@ -5,6 +5,8 @@ import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import NotificationPage from "./pages/NoficiationPage";
 import ProfilePage from "./pages/ProfilePage";
+import ChatPage from "./pages/ChatPage";
+import ChatRoomPage from "./pages/ChatRoomPage"; // Importe o novo componente
 
 import Sidebar from "./components/common/Sidebar";
 import RightPanel from "./components/common/RightPanel";
@@ -15,8 +17,6 @@ import LoadingSpinner from "./components/common/LoadingSpinner";
 
 function App() {
 	const { data: authUser, isLoading } = useQuery({
-		
-		
 		queryKey: ["authUser"],
 		queryFn: async () => {
 			try {
@@ -53,6 +53,11 @@ function App() {
 				<Route path='/signup' element={!authUser ? <SignUpPage /> : <Navigate to='/' />} />
 				<Route path='/notifications' element={authUser ? <NotificationPage /> : <Navigate to='/login' />} />
 				<Route path='/profile/:username' element={authUser ? <ProfilePage /> : <Navigate to='/login' />} />
+				<Route path='/chat' element={authUser ? <ChatPage /> : <Navigate to='/login' />} />
+				<Route
+					path='/chat/:username'
+					element={authUser ? <ChatRoomPage authUser={authUser} /> : <Navigate to='/login' />} // Passando authUser como prop
+				/>
 			</Routes>
 			{authUser && <RightPanel />}
 			<Toaster />
