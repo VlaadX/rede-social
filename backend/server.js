@@ -29,8 +29,8 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: ["http://localhost:3000", "https://rede-social-p1fh.onrender.com"], // Permitir localhost e produção
-        methods: ["GET", "POST"],
+        origin: ["http://localhost:3000", "https://rede-social-p1fh.onrender.com", ], // Permitir localhost e produção
+        methods: ["GET", "POST", "DELETE"],
         credentials: true,
     },
 });
@@ -78,6 +78,7 @@ io.on("connection", (socket) => {
     });
 });
 
+
 // Configuração para servir o frontend em produção
 if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "frontend", "dist")));
@@ -92,4 +93,6 @@ const PORT = process.env.PORT || 8000;
 server.listen(PORT, '0.0.0.0', () => {
     console.log(`Servidor ON na porta ${PORT}`);
     connectMongoDB();
+
 });
+

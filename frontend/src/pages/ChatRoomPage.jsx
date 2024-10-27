@@ -9,8 +9,6 @@ const ChatRoomPage = ({ authUser }) => {
 	const [messages, setMessages] = useState([]);
 	const [currentMessage, setCurrentMessage] = useState("");
 	const [recipient, setRecipient] = useState(null);
-	const [hasMoreMessages, setHasMoreMessages] = useState(true);
-	const [skip, setSkip] = useState(0);
 
 	const userId = authUser._id;
 	const userName = authUser.username;
@@ -32,13 +30,16 @@ const ChatRoomPage = ({ authUser }) => {
 		const roomId = [userId, recipient._id].sort().join("_");
 
 		const fetchMessages = async () => {
-			const res = await fetch(`/api/messages/${roomId}?limit=50&skip=${skip}`);
+			const res = await fetch(`/api/messages/${roomId}?limit=50&skip=0`);
 			const data = await res.json();
-			setMessages((prevMessages) => {
-				const newMessages = data.filter((msg) => !prevMessages.some((m) => m._id === msg._id));
-				return [...newMessages.reverse(), ...prevMessages];
-			});
-			setHasMoreMessages(data.length === 50);
+			setMessages(data);
+
+			// Rola para o final após o carregamento inicial das mensagens
+			if (messagesContainerRef.current) {
+				setTimeout(() => {
+					messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+				}, 100); // Aguardar o render completo
+			}
 		};
 
 		fetchMessages();
@@ -46,12 +47,12 @@ const ChatRoomPage = ({ authUser }) => {
 		socket.emit("join_room", { userId, targetUserId: recipient._id });
 
 		const handleReceiveMessage = (data) => {
-			setMessages((prevMessages) => {
-				if (!prevMessages.some((msg) => msg._id === data._id)) {
-					return [...prevMessages, data];
-				}
-				return prevMessages;
-			});
+			setMessages((prevMessages) => [...prevMessages, data]);
+
+			// Rola para o final ao receber uma nova mensagem
+			if (messagesContainerRef.current) {
+				messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+			}
 		};
 
 		socket.on("receive_message", handleReceiveMessage);
@@ -60,19 +61,7 @@ const ChatRoomPage = ({ authUser }) => {
 			socket.off("receive_message", handleReceiveMessage);
 			socket.emit("leave_room", roomId);
 		};
-	}, [userId, recipient, skip]);
-
-	useEffect(() => {
-		if (messagesContainerRef.current && skip === 0) {
-			messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
-		}
-	}, [messages, skip]);
-
-	const handleScroll = () => {
-		if (messagesContainerRef.current.scrollTop === 0 && hasMoreMessages) {
-			setSkip((prevSkip) => prevSkip + 50);
-		}
-	};
+	}, [userId, recipient]);
 
 	const sendMessage = () => {
 		if (currentMessage.trim() === "") return;
@@ -86,7 +75,14 @@ const ChatRoomPage = ({ authUser }) => {
 		};
 
 		socket.emit("send_message", messageData);
+
+		setMessages((prevMessages) => [...prevMessages, messageData]);
 		setCurrentMessage("");
+
+		// Rola para o final ao enviar uma nova mensagem
+		if (messagesContainerRef.current) {
+			messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+		}
 	};
 
 	return (
@@ -107,7 +103,6 @@ const ChatRoomPage = ({ authUser }) => {
 
 			<div
 				ref={messagesContainerRef}
-				onScroll={handleScroll}
 				className='flex-1 overflow-y-auto p-4 space-y-4'
 			>
 				{messages.map((msg) => (
@@ -133,7 +128,7 @@ const ChatRoomPage = ({ authUser }) => {
 								<p className='text-sm'>{msg.content}</p>
 							</div>
 							<span className='text-xs text-gray-400 mt-1'>
-								{new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+								{new Date(msg.timestamp).toLocaleDateString()} {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
 							</span>
 						</div>
 						{msg.authorId === userId && (
@@ -147,7 +142,7 @@ const ChatRoomPage = ({ authUser }) => {
 				))}
 			</div>
 
-			<div className='p-4 border-t border-gray-700 bg-black-800 flex'>
+			<div className='p-4 border-t border-gray-700 bg-black flex'>
 				<input
 					type='text'
 					value={currentMessage}
