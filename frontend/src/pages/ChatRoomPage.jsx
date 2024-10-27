@@ -14,6 +14,7 @@ const ChatRoomPage = ({ authUser }) => {
 	const userName = authUser.username;
 
 	const messagesContainerRef = useRef(null);
+	const endOfMessagesRef = useRef(null); // Referência para o fim da conversa
 
 	useEffect(() => {
 		const fetchRecipientData = async () => {
@@ -33,13 +34,8 @@ const ChatRoomPage = ({ authUser }) => {
 			const res = await fetch(`/api/messages/${roomId}?limit=50&skip=0`);
 			const data = await res.json();
 			setMessages(data);
-
 			// Rola para o final após o carregamento inicial das mensagens
-			if (messagesContainerRef.current) {
-				setTimeout(() => {
-					messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
-				}, 100); // Aguardar o render completo
-			}
+			scrollToBottom();
 		};
 
 		fetchMessages();
@@ -48,11 +44,8 @@ const ChatRoomPage = ({ authUser }) => {
 
 		const handleReceiveMessage = (data) => {
 			setMessages((prevMessages) => [...prevMessages, data]);
-
 			// Rola para o final ao receber uma nova mensagem
-			if (messagesContainerRef.current) {
-				messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
-			}
+			scrollToBottom();
 		};
 
 		socket.on("receive_message", handleReceiveMessage);
@@ -80,8 +73,13 @@ const ChatRoomPage = ({ authUser }) => {
 		setCurrentMessage("");
 
 		// Rola para o final ao enviar uma nova mensagem
-		if (messagesContainerRef.current) {
-			messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+		scrollToBottom();
+	};
+
+	// Função para rolar automaticamente para o final da conversa
+	const scrollToBottom = () => {
+		if (endOfMessagesRef.current) {
+			endOfMessagesRef.current.scrollIntoView({ behavior: "smooth" });
 		}
 	};
 
@@ -140,9 +138,11 @@ const ChatRoomPage = ({ authUser }) => {
 						)}
 					</div>
 				))}
+				{/* Elemento para marcar o final das mensagens */}
+				<div ref={endOfMessagesRef}></div>
 			</div>
 
-			<div className='p-4 border-t border-gray-700 bg-black flex'>
+			<div className='sticky bottom-0 p-4 border-t border-gray-700 bg-black flex'>
 				<input
 					type='text'
 					value={currentMessage}
