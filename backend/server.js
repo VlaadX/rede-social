@@ -29,7 +29,7 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:3000", // Permitir requisições do frontend
+        origin: ["http://localhost:3000", "https://rede-social-p1fh.onrender.com"], // Permitir localhost e produção
         methods: ["GET", "POST"],
         credentials: true,
     },
