@@ -58,9 +58,13 @@ const userSchema = new mongoose.Schema({
             default:[]
         }
     ],
+    birthday: {
+        type: Date, // Define como tipo Date no Mongoose
+        default: null,
+    },
 
 
-},{timesstamps:true});
+},{timestamps:true});
 
 const User = mongoose.model("User",userSchema);
 

@@ -88,7 +88,7 @@ const FollowingPage = () => {
                                         <h3 className="text-md font-semibold text-white">{user.fullName}</h3>
                                         <p className="text-sm text-gray-400">@{user.username}</p>
                                     </Link>
-                                    <p className="text-xs text-gray-500">{user.bio || "No bio available"}</p>
+                                    <p className="text-s text-white">{user.bio || ""}</p>
                                 </div>
                             </div>
                             

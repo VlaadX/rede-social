@@ -36,7 +36,10 @@ const Sidebar = () => {
 	return (
 		<>
 			{/* Sidebar para telas maiores */}
+			
 			<div className='hidden md:flex md:flex-[2_2_0] w-18 max-w-52'>
+
+				
 				<div className='sticky top-0 left-0 h-screen flex flex-col border-r border-gray-700 w-20 md:w-full'>
 					<ul className='flex flex-col gap-3 mt-4'>
 						<li className='flex justify-center md:justify-start'>
@@ -44,7 +47,7 @@ const Sidebar = () => {
 								to='/'
 								className='flex gap-3 items-center hover:bg-stone-900 transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer'
 							>
-								<GrHomeRounded className='w-6 h-6' />
+								<GrHomeRounded className='w-6 h-6'  />
 								<span className='text-lg hidden md:block'>Inicio</span>
 							</Link>
 						</li>

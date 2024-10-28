@@ -10,6 +10,7 @@ const EditProfileModal = ({ authUser }) => {
 		link: "",
 		newPassword: "",
 		currentPassword: "",
+		birthday: "", 
 	});
 
 	const { updateProfile, isUpdatingProfile } = useUpdateUserProfile();
@@ -17,17 +18,18 @@ const EditProfileModal = ({ authUser }) => {
 	const handleInputChange = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
-
+	
 	useEffect(() => {
 		if (authUser) {
 			setFormData({
-				fullName: authUser.fullName,
-				username: authUser.username,
-				email: authUser.email,
-				bio: authUser.bio,
-				link: authUser.link,
+				fullName: authUser.fullName || "",
+				username: authUser.username || "",
+				email: authUser.email || "",
+				bio: authUser.bio || "",
+				link: authUser.link || "",
 				newPassword: "",
 				currentPassword: "",
+				birthday: authUser.birthday ? authUser.birthday.slice(0, 10) : "", // Formata a data para YYYY-MM-DD
 			});
 		}
 	}, [authUser]);
@@ -47,8 +49,17 @@ const EditProfileModal = ({ authUser }) => {
 						className='flex flex-col gap-4'
 						onSubmit={(e) => {
 							e.preventDefault();
-							updateProfile(formData);
+
+							// Converte o birthday para Date antes de enviar
+							const formattedFormData = {
+								...formData,
+								birthday: formData.birthday ? new Date(formData.birthday) : null,
+							};
+							console.log("FormData enviado:", formattedFormData); // Verifique o valor aqui
+							updateProfile(formattedFormData);
+							
 						}}
+						
 					>
 						<div className='flex flex-wrap gap-2'>
 							<input
@@ -111,16 +122,29 @@ const EditProfileModal = ({ authUser }) => {
 							name='link'
 							onChange={handleInputChange}
 						/>
+						<input
+							type='date'
+							placeholder='Birthday'
+							className='flex-1 input border border-gray-700 rounded p-2 input-md'
+							value={formData.birthday}
+							name='birthday'
+							onChange={handleInputChange}
+						/>
+						
 						<button className='btn btn-primary rounded-full btn-sm text-white'>
+							
 							{isUpdatingProfile ? "Updating..." : "Update"}
 						</button>
+						
 					</form>
 				</div>
 				<form method='dialog' className='modal-backdrop'>
 					<button className='outline-none'>close</button>
 				</form>
 			</dialog>
+			
 		</>
 	);
+	
 };
 export default EditProfileModal;

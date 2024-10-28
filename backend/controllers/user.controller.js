@@ -40,9 +40,11 @@ export const followUnfollowUser = async (req, res) => {
 
 			res.status(200).json({ message: "User unfollowed successfully" });
 		} else {
+
 			// Follow the user
 			await User.findByIdAndUpdate(id, { $push: { followers: req.user._id } });
 			await User.findByIdAndUpdate(req.user._id, { $push: { following: id } });
+
 			// Send notification to the user
 			const newNotification = new Notification({
 				type: "follow",
@@ -74,8 +76,6 @@ export const getSuggestedUsers = async (req, res) => {
 			},
 			{ $sample: { size: 10 } },
 		]);
-
-		// 1,2,3,4,5,6,
 		const filteredUsers = users.filter((user) => !usersFollowedByMe.following.includes(user._id));
 		const suggestedUsers = filteredUsers.slice(0, 4);
 
@@ -89,7 +89,7 @@ export const getSuggestedUsers = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
-	const { fullName, email, username, currentPassword, newPassword, bio, link } = req.body;
+	const { fullName, email, username, currentPassword, newPassword, bio, link, birthday } = req.body;
 	let { profileImg, coverImg } = req.body;
 
 	const userId = req.user._id;
@@ -139,6 +139,7 @@ export const updateUser = async (req, res) => {
 		user.link = link || user.link;
 		user.profileImg = profileImg || user.profileImg;
 		user.coverImg = coverImg || user.coverImg;
+		user.birthday = birthday || user.birthday;
 
 		user = await user.save();
 
@@ -157,7 +158,7 @@ export const getAllFollowers = async (req, res) => {
 
 	try {
 		// Localiza o usuário pelo username e popula a lista de seguidores com informações básicas
-		const user = await User.findOne({ username }).populate("followers", "username fullName profileImg");
+		const user = await User.findOne({ username }).populate("followers", "username fullName profileImg bio");
 
 		if (!user) return res.status(404).json({ message: "User not found" });
 
@@ -173,7 +174,7 @@ export const getAllFollowing = async (req, res) => {
 
 	try {
 		// Localiza o usuário pelo username e popula a lista de seguidores com informações básicas
-		const user = await User.findOne({ username }).populate("following", "username fullName profileImg");
+		const user = await User.findOne({ username }).populate("following", "username fullName profileImg bio");
 
 		if (!user) {
 			return res.status(404).json({ message: "User not found" });

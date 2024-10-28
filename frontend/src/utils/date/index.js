@@ -23,20 +23,50 @@ export const formatPostDate = (createdAt) => {
 export const formatMemberSinceDate = (createdAt) => {
 	const date = new Date(createdAt);
 	const months = [
-		"January",
-		"February",
-		"March",
-		"April",
-		"May",
-		"June",
-		"July",
-		"August",
-		"September",
-		"October",
-		"November",
-		"December",
+		"Janeiro",
+		"Fevereiro",
+		"Março",
+		"Abril",
+		"Maio",
+		"Junho",
+		"Julho",
+		"Agosto",
+		"Setembro",
+		"Outubro",
+		"Novembro",
+		"Dezembro",
 	];
 	const month = months[date.getMonth()];
 	const year = date.getFullYear();
-	return `Joined ${month} ${year}`;
+	return `Desde ${month} ${year}`;
+};
+export const formatBirthday = (birthday) => {
+
+	if (!birthday) return null; // Retorna null se birthday não estiver definido
+
+	const date = new Date(birthday);
+
+	// Verificação para ignorar data padrão 31/12 (ajuste conforme necessário)
+	if (date.getDate() === 31 && date.getMonth() === 11 && date.getFullYear() === 1899) {
+		return null;
+	}
+
+	const months = [
+		"Janeiro",
+		"Fevereiro",
+		"Março",
+		"Abril",
+		"Maio",
+		"Junho",
+		"Julho",
+		"Agosto",
+		"Setembro",
+		"Outubro",
+		"Novembro",
+		"Dezembro",
+	];
+	const day = date.getDate();
+	const month = months[date.getMonth()];
+
+	return `Nascido em ${day} de ${month}`;
 };

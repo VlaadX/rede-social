@@ -19,6 +19,7 @@ const FollowersPage = () => {
             try {
                 const res = await fetch(`/api/users/followers/${authUser.username}`);
                 const data = await res.json();
+                console.log(data);
                 if (!res.ok) throw new Error(data.error || "Something went wrong");
                 return data;
             } catch (error) {
@@ -89,10 +90,11 @@ const FollowersPage = () => {
                                 <div>
                                     <Link to={`/profile/${user.username}`}>
                                         <h3 className="text-md font-semibold text-white">{user.fullName}</h3>
-                                        <p className="text-sm text-gray-400">@{user.username}</p>
+                                        <p className="text-sm text-gray-400">@{user.username}</p>    
+                                        <p className="text-s">{user.bio || ""}</p>
+
                                     </Link>
-                                    <p className="text-xs text-gray-500">{user.bio || "No bio available"}</p>
-                                    {user.isFollowing && <span className="text-xs text-blue-500">Segue você</span>}
+
                                 </div>
                             </div>
 

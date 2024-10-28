@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import Posts from "../components/common/Posts";
 import ProfileHeaderSkeleton from "../components/skeletons/ProfileHeaderSkeleton";
 import EditProfileModal from "./EditProfileModal";
+import { LiaBirthdayCakeSolid } from "react-icons/lia";
 
 import { POSTS } from "../utils/db/dummy";
 
@@ -12,7 +13,7 @@ import { IoCalendarOutline } from "react-icons/io5";
 import { FaLink } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import { useQuery } from "@tanstack/react-query";
-import { formatMemberSinceDate } from "../utils/date";
+import { formatBirthday, formatMemberSinceDate } from "../utils/date";
 
 import useFollow from "../hooks/useFollow";
 import useUpdateUserProfile from "../hooks/useUpdateUserProfile";
@@ -57,6 +58,7 @@ const ProfilePage = () => {
 
 	const isMyProfile = authUser._id === user?._id;
 	const memberSinceDate = formatMemberSinceDate(user?.createdAt);
+	const birthday = formatBirthday(user?.birthday);
 	const amIFollowing = authUser?.following.includes(user?._id);
 
 	const handleImgChange = (e, state) => {
@@ -80,7 +82,7 @@ const ProfilePage = () => {
 			<div className='flex-[4_4_0]  border-r border-gray-700 min-h-screen '>
 				{/* HEADER */}
 				{(isLoading || isRefetching) && <ProfileHeaderSkeleton />}
-				{!isLoading && !isRefetching && !user && <p className='text-center text-lg mt-4'>User not found</p>}
+				{!isLoading && !isRefetching && !user && <p className='text-center text-lg mt-4'>Usuario nao encontrado</p>}
 				<div className='flex flex-col'>
 					{!isLoading && !isRefetching && user && (
 						<>
@@ -90,7 +92,6 @@ const ProfilePage = () => {
 								</Link>
 								<div className='flex flex-col'>
 									<p className='font-bold text-lg'>{user?.fullName}</p>
-								{/*	<span className='text-sm text-slate-500'>{POSTS?.length} posts</span> */}
 								</div>
 							</div>
 							{/* COVER IMG */}
@@ -123,7 +124,8 @@ const ProfilePage = () => {
 									ref={profileImgRef}
 									onChange={(e) => handleImgChange(e, "profileImg")}
 								/>
-								{/* USER AVATAR */}
+							
+
 								<div className='avatar absolute -bottom-16 left-4'>
 									<div className='w-32 rounded-full relative group/avatar'>
 										<img src={profileImg || user?.profileImg || "/avatar-placeholder.png"} />
@@ -182,7 +184,6 @@ const ProfilePage = () => {
 													rel='noreferrer'
 													className='text-sm text-blue-500 hover:underline'
 												>
-													{/* Updated this after recording the video. I forgot to update this while recording, sorry, thx. */}
 													{user?.link}
 												</a>
 											</>
@@ -191,6 +192,10 @@ const ProfilePage = () => {
 									<div className='flex gap-2 items-center'>
 										<IoCalendarOutline className='w-4 h-4 text-slate-500' />
 										<span className='text-sm text-slate-500'>{memberSinceDate}</span>
+									</div>
+									<div className='flex gap-2 items-center'>
+										<LiaBirthdayCakeSolid className='w-4 h-4 text-slate-500' />
+										<span className='text-sm text-slate-500'>{birthday}</span>
 									</div>
 								</div>
 								<div className='flex gap-2'>

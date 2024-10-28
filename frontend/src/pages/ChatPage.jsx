@@ -8,11 +8,11 @@ const ChatPage = () => {
     const [unreadRooms, setUnreadRooms] = useState([]);
     
     // Fetching followers as usual
-    const { data: followers, isLoading } = useQuery({
-        queryKey: ["followers"],
+    const { data: following, isLoading } = useQuery({
+        queryKey: ["following"],
         queryFn: async () => {
             try {
-                const res = await fetch(`/api/users/followers/${authUser.username}`);
+                const res = await fetch(`/api/users/following/${authUser.username}`);
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.error || "Something went wrong");
                 return data;
@@ -52,39 +52,30 @@ const ChatPage = () => {
                 </div>
             )}
 
-            {!isLoading && followers && (
+            {!isLoading && following && (
                 <div className='p-4'>
-                    {followers.length === 0 ? (
+                    {following.length === 0 ? (
                         <p className='text-center text-gray-500'>Você ainda não possui seguidores.</p>
                     ) : (
                         <ul className='space-y-4'>
-                            {followers.map((follower) => {
-                                // Determining if this follower has unread messages
-                                const hasUnreadMessages = unreadRooms.includes(
-                                    [authUser._id, follower._id].sort().join("_")
-                                );
+                            {following.map((following) => {
 
                                 return (
                                     <Link
-                                        key={follower._id}
-                                        to={`/chat/${follower.username}`} // Navigates to the chat page with the follower
-                                        className='flex items-center gap-4 p-4 rounded-lg hover:bg-gray-800 cursor-pointer'
+                                        key={following._id}
+                                        to={`/chat/${following.username}`} // Navigates to the chat page with the follower
+                                        className='flex items-center gap-3 p-1 rounded-lg hover:bg-black-800 cursor-pointer '
                                     >
                                         <img
-                                            src={follower.profileImg || "/avatar-placeholder.png"}
-                                            alt={follower.username}
+                                            src={following.profileImg || "/avatar-placeholder.png"}
+                                            alt={following.username}
                                             className='w-12 h-12 rounded-full'
                                         />
                                         <div>
-                                            <p className='font-bold'>{follower.fullName}</p>
-                                            <p className='text-sm text-gray-500'>@{follower.username}</p>
+                                            <p className='font-bold'>{following.fullName}</p>
+                                            <p className='text-sm text-gray-500'>@{following.username}</p>
                                         </div>
-                                        {/* Display "Nova Mensagem" if there are unread messages */}
-                                        {hasUnreadMessages && (
-                                            <span className='ml-auto text-green-400 font-semibold text-sm'>
-                                                Nova Mensagem
-                                            </span>
-                                        )}
+
                                     </Link>
                                 );
                             })}
