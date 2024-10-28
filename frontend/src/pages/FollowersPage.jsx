@@ -1,32 +1,37 @@
 import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react"; // Adicionado useState
-
+import { useEffect, useState } from "react";
 import useFollow from "../hooks/useFollow";
 
 const FollowersPage = () => {
     const navigate = useNavigate();
-    const { username, tab } = useParams(); // Recebe o username e tab da URL
+    const { username, tab } = useParams(); // Recebe o username da URL
     const { follow, isPending } = useFollow();
-
     const [feedType, setFeedType] = useState("followers");
 
-    const { data: authUser } = useQuery({ queryKey: ["authUser"] });
-    const { data: followers, isLoading } = useQuery({
-        queryKey: ["followers"],
+
+    
+    const { data: userProfile, isLoading: isLoadingProfile } = useQuery({
+        queryKey: ["userProfile", username],
         queryFn: async () => {
-            try {
-                const res = await fetch(`/api/users/followers/${authUser.username}`);
-                const data = await res.json();
-                console.log(data);
-                if (!res.ok) throw new Error(data.error || "Something went wrong");
-                return data;
-            } catch (error) {
-                throw new Error(error);
-            }
+            const res = await fetch(`/api/users/profile/${username}`);
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || "Something went wrong");
+            return data;
         },
-        enabled: !!authUser, // Espera authUser carregar antes de buscar seguidores
+        enabled: !!username,
+    });
+
+    const { data: following, isLoading } = useQuery({
+        queryKey: ["followers", username],
+        queryFn: async () => {
+            const res = await fetch(`/api/users/followers/${username}`);
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || "Something went wrong");
+            return data;
+        },
+        enabled: !!username,
     });
 
     if (isLoading) {
@@ -37,7 +42,7 @@ const FollowersPage = () => {
         );
     }
 
-    const listToShow = tab === "seguindo" ? following : followers;
+    const listToShow = following;
 
     return (
         <div className="flex-[4_4_0] border-r border-gray-700 min-h-screen">
@@ -48,8 +53,8 @@ const FollowersPage = () => {
                         &larr;
                     </Link>
                     <div>
-                        <h2 className="font-bold text-lg">{authUser.fullName}</h2>
-                        <p className="text-sm text-gray-500">@{authUser.username}</p>
+                        <h2 className="font-bold text-lg">{userProfile?.fullName}</h2>
+                        <p className="text-sm text-gray-500">@{userProfile?.username}</p>
                     </div>
                 </div>
             </div>
@@ -67,7 +72,7 @@ const FollowersPage = () => {
                 </div>
                 <div
                     className='flex justify-center flex-1 p-3 text-slate-500 hover:bg-secondary transition duration-300 relative cursor-pointer'
-                    onClick={() => setFeedType("followers" || navigate(`/profile/${username}/followers`))}
+                    onClick={() => setFeedType("followers") || navigate(`/profile/${username}/followers`)}
                 >
                     Seguidores
                     {feedType === "followers" && (
@@ -91,13 +96,13 @@ const FollowersPage = () => {
                                     <Link to={`/profile/${user.username}`}>
                                         <h3 className="text-md font-semibold text-white">{user.fullName}</h3>
                                         <p className="text-sm text-gray-400">@{user.username}</p>    
-                                        <p className="text-s">{user.bio || ""}</p>
-
+                                        <p className="text-s text-white-500">{user.bio || "No bio available"}</p>
                                     </Link>
-
                                 </div>
                             </div>
-
+                            <button className={`px-4 py-1 rounded-full text-sm font-semibold ${user.isFollowing ? "bg-gray-700 text-white" : "bg-white text-black"}`}>
+                                {user.isFollowing ? "Seguindo" : "Seguir"}
+                            </button>
                         </div>
                     ))
                 ) : (

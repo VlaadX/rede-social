@@ -44,7 +44,7 @@ const EditProfileModal = ({ authUser }) => {
 			</button>
 			<dialog id='edit_profile_modal' className='modal'>
 				<div className='modal-box border rounded-md border-gray-700 shadow-md'>
-					<h3 className='font-bold text-lg my-3'>Update Profile</h3>
+					<h3 className='font-bold text-lg my-3'>Atualizar Perfil</h3>
 					<form
 						className='flex flex-col gap-4'
 						onSubmit={(e) => {
@@ -133,7 +133,7 @@ const EditProfileModal = ({ authUser }) => {
 						
 						<button className='btn btn-primary rounded-full btn-sm text-white'>
 							
-							{isUpdatingProfile ? "Updating..." : "Update"}
+							{isUpdatingProfile ? "Atualizando..." : "Atualizar Campos"}
 						</button>
 						
 					</form>

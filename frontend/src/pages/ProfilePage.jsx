@@ -161,7 +161,7 @@ const ProfilePage = () => {
 											setCoverImg(null);
 										}}
 									>
-										{isUpdatingProfile ? "Updating..." : "Update"}
+										{isUpdatingProfile ? "Atualizando..." : "Atualizar"}
 									</button>
 								)}
 							</div>
@@ -200,12 +200,12 @@ const ProfilePage = () => {
 								</div>
 								<div className='flex gap-2'>
 									<Link to={`/profile/${username}/following`} className='flex gap-1 items-center'>
-										<span className='font-bold text-xs'>{user?.following.length}</span>
-										<span className='text-slate-500 text-xs'>Seguindo</span>
+										<span className='font-bold text-s'>{user?.following.length}</span>
+										<span className='text-slate-500 text-s'>Seguindo</span>
 									</Link>
 									<Link to={`/profile/${username}/followers`} className='flex gap-1 items-center'>
-										<span className='font-bold text-xs'>{user?.followers.length}</span>
-										<span className='text-slate-500 text-xs'>Seguidores</span>
+										<span className='font-bold text-s'>{user?.followers.length}</span>
+										<span className='text-slate-500 text-s'>Seguidores</span>
 									</Link>
 								</div>
 

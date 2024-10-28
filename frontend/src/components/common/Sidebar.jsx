@@ -1,15 +1,15 @@
-import { BiChat } from "react-icons/bi"; // Ícone de chat
+import { BiChat, BiLogOut } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { TbHexagonLetterW } from "react-icons/tb";
 import { GrHomeRounded } from "react-icons/gr";
-import { Link } from "react-router-dom";
-import { BiLogOut } from "react-icons/bi";
+import { Link, useLocation } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 const Sidebar = () => {
 	const queryClient = useQueryClient();
+	const location = useLocation(); // Usado para determinar a rota atual
 	const { mutate: logout } = useMutation({
 		mutationFn: async () => {
 			try {
@@ -33,28 +33,31 @@ const Sidebar = () => {
 	});
 	const { data: authUser } = useQuery({ queryKey: ["authUser"] });
 
+	const isActive = (path) => location.pathname === path;
+
 	return (
 		<>
 			{/* Sidebar para telas maiores */}
-			
 			<div className='hidden md:flex md:flex-[2_2_0] w-18 max-w-52'>
-
-				
 				<div className='sticky top-0 left-0 h-screen flex flex-col border-r border-gray-700 w-20 md:w-full'>
 					<ul className='flex flex-col gap-3 mt-4'>
 						<li className='flex justify-center md:justify-start'>
 							<Link
 								to='/'
-								className='flex gap-3 items-center hover:bg-stone-900 transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer'
+								className={`flex gap-3 items-center ${
+									isActive("/") ? "bg-stone-900" : "hover:bg-stone-900"
+								} transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer`}
 							>
-								<GrHomeRounded className='w-6 h-6'  />
+								<GrHomeRounded className='w-6 h-6' />
 								<span className='text-lg hidden md:block'>Inicio</span>
 							</Link>
 						</li>
 						<li className='flex justify-center md:justify-start'>
 							<Link
 								to='/notifications'
-								className='flex gap-3 items-center hover:bg-stone-900 transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer'
+								className={`flex gap-3 items-center ${
+									isActive("/notifications") ? "bg-stone-900" : "hover:bg-stone-900"
+								} transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer`}
 							>
 								<IoNotificationsOutline className='w-6 h-6' />
 								<span className='text-lg hidden md:block'>Notificações</span>
@@ -64,7 +67,9 @@ const Sidebar = () => {
 						<li className='flex justify-center md:justify-start'>
 							<Link
 								to={`/profile/${authUser?.username}`}
-								className='flex gap-3 items-center hover:bg-stone-900 transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer'
+								className={`flex gap-3 items-center ${
+									isActive(`/profile/${authUser?.username}`) ? "bg-stone-900" : "hover:bg-stone-900"
+								} transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer`}
 							>
 								<CgProfile className='w-6 h-6' />
 								<span className='text-lg hidden md:block'>Perfil</span>
@@ -74,19 +79,23 @@ const Sidebar = () => {
 						<li className='flex justify-center md:justify-start'>
 							<Link
 								to='/chat'
-								className='flex gap-3 items-center hover:bg-stone-900 transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer'
+								className={`flex gap-3 items-center ${
+									isActive("/chat") ? "bg-stone-900" : "hover:bg-stone-900"
+								} transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer`}
 							>
 								<BiChat className='w-6 h-6' />
-								<span className='text-lg hidden md:block'>Chats (BETA)</span>
+								<span className='text-lg hidden md:block'>Chats</span>
 							</Link>
 						</li>
 						<li className='flex justify-center md:justify-start'>
 							<Link
 								to='/'
-								className='flex gap-3 items-center hover:bg-stone-900 transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer'
+								className={`flex gap-3 items-center ${
+									isActive("/") ? "bg-stone-900" : "hover:bg-stone-900"
+								} transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer`}
 							>
-								< TbHexagonLetterW className='w-6 h-6' />
-								<span className='text-lg hidden md:block'>Wad.IA (SOON)</span>
+								<TbHexagonLetterW className='w-6 h-6' />
+								<span className='text-lg hidden md:block'>Wad.IA (EM BREVE)</span>
 							</Link>
 						</li>
 					</ul>
@@ -121,16 +130,20 @@ const Sidebar = () => {
 			{/* Barra inferior para telas menores */}
 			<div className='fixed bottom-0 left-0 right-0 flex justify-around bg-black p-2 border-t border-gray-700 md:hidden'>
 				<Link to='/'>
-					<GrHomeRounded className='w-6 h-6 text-white' />
+					<GrHomeRounded className={`w-6 h-6 ${isActive("/") ? "text-blue-500" : "text-white"}`} />
 				</Link>
 				<Link to='/notifications'>
-					<IoNotificationsOutline className='w-6 h-6 text-white' />
+					<IoNotificationsOutline
+						className={`w-6 h-6 ${isActive("/notifications") ? "text-blue-500" : "text-white"}`}
+					/>
 				</Link>
 				<Link to={`/profile/${authUser?.username}`}>
-					<CgProfile className='w-6 h-6 text-white' />
+					<CgProfile
+						className={`w-6 h-6 ${isActive(`/profile/${authUser?.username}`) ? "text-blue-500" : "text-white"}`}
+					/>
 				</Link>
 				<Link to='/chat'>
-					<BiChat className='w-6 h-6 text-white' />
+					<BiChat className={`w-6 h-6 ${isActive("/chat") ? "text-blue-500" : "text-white"}`} />
 				</Link>
 				<BiLogOut
 					className='w-6 h-6 text-white cursor-pointer'

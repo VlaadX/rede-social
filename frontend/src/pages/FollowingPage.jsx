@@ -2,30 +2,38 @@ import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import useFollow from "../hooks/useFollow";
 
 const FollowingPage = () => {
     const navigate = useNavigate();
-    const { username, tab } = useParams(); // Recebe o username e tab da URL
-
+    const { username, tab } = useParams(); // Recebe o username da URL
+    const { follow, isPending } = useFollow();
     const [feedType, setFeedType] = useState("following");
 
-    const { data: authUser } = useQuery({ queryKey: ["authUser"] });
-    const { data: following, isLoading } = useQuery({
-        queryKey: ["following"],
+    // Query para buscar o usuário do perfil atual
+    const { data: userProfile, isLoading: isLoadingProfile } = useQuery({
+        queryKey: ["userProfile", username],
         queryFn: async () => {
-            try {
-                const res = await fetch(`/api/users/following/${authUser.username}`);
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.error || "Something went wrong");
-                return data;
-            } catch (error) {
-                throw new Error(error);
-            }
+            const res = await fetch(`/api/users/profile/${username}`);
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || "Something went wrong");
+            return data;
         },
-        enabled: !!authUser, // Espera authUser carregar antes de buscar os seguidos
+        enabled: !!username,
     });
 
-    if (isLoading) {
+    const { data: following, isLoading } = useQuery({
+        queryKey: ["following", username],
+        queryFn: async () => {
+            const res = await fetch(`/api/users/following/${username}`);
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || "Something went wrong");
+            return data;
+        },
+        enabled: !!username,
+    });
+
+    if (isLoading || isLoadingProfile) {
         return (
             <div className="flex justify-center items-center h-screen">
                 <LoadingSpinner size="lg" />
@@ -33,7 +41,7 @@ const FollowingPage = () => {
         );
     }
 
-    const listToShow = tab === "following" ? followers : following;
+    const listToShow = following;
 
     return (
         <div className="flex-[4_4_0] border-r border-gray-700 min-h-screen">
@@ -44,8 +52,9 @@ const FollowingPage = () => {
                         &larr;
                     </Link>
                     <div>
-                        <h2 className="font-bold text-lg">{authUser.fullName}</h2>
-                        <p className="text-sm text-gray-500">@{authUser.username}</p>
+                        {/* Exibe o nome e o username do perfil visualizado */}
+                        <h2 className="font-bold text-lg">{userProfile?.fullName}</h2>
+                        <p className="text-sm text-gray-500">@{userProfile?.username}</p>
                     </div>
                 </div>
             </div>
@@ -53,7 +62,7 @@ const FollowingPage = () => {
             {/* Navegação entre Seguidores e Seguindo */}
             <div className='flex w-full border-b border-gray-700 mt-4'>
                 <div
-                    className='flex justify-center flex-1 p-3 text-primary transition duration-300 relative cursor-pointer'
+                    className='flex justify-center flex-1 p-3 hover:bg-secondary transition duration-300 relative cursor-pointer'
                     onClick={() => setFeedType("following") || navigate(`/profile/${username}/following`)}
                 >
                     Seguindo
@@ -72,7 +81,7 @@ const FollowingPage = () => {
                 </div>
             </div>
 
-            {/* Lista de Seguindo */}
+            {/* Lista de Seguidores ou Seguindo */}
             <div className="space-y-2 pt-2 px-4">
                 {listToShow && listToShow.length > 0 ? (
                     listToShow.map((user) => (
@@ -86,12 +95,14 @@ const FollowingPage = () => {
                                 <div>
                                     <Link to={`/profile/${user.username}`}>
                                         <h3 className="text-md font-semibold text-white">{user.fullName}</h3>
-                                        <p className="text-sm text-gray-400">@{user.username}</p>
+                                        <p className="text-sm text-gray-400">@{user.username}</p>    
+                                        <p className="text-s text-white-500">{user.bio || "No bio available"}</p>
                                     </Link>
-                                    <p className="text-s text-white">{user.bio || ""}</p>
                                 </div>
                             </div>
-                            
+                            <button className={`px-4 py-1 rounded-full text-sm font-semibold ${user.isFollowing ? "bg-gray-700 text-white" : "bg-white text-black"}`}>
+                                {user.isFollowing ? "Seguindo" : "Seguir"}
+                            </button>
                         </div>
                     ))
                 ) : (

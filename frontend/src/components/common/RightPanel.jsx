@@ -43,7 +43,7 @@ const RightPanel = () => {
 					<input type="search" id="default-search" className="
 					block w-full p-4 ps-10 text-sm text-white-900 border border-gray-700 rounded-lg
 					 bg-gray-700 focus:ring-blue-500 focus:border-blue-500 focus:bg-black
-					" placeholder="Buscar " required />
+					" placeholder="Buscar ( EM BREVE) " required />
 					 
 				</div>
 			</form>
@@ -88,7 +88,7 @@ const RightPanel = () => {
 											follow(user._id);
 										}}
 									>
-										{isPending ? <LoadingSpinner size='sm' /> : "Follow"}
+										{isPending ? <LoadingSpinner size='sm' /> : "Seguir"}
 									</button>
 								</div>
 							</Link>
