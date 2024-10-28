@@ -7,9 +7,13 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
+import { IoSettingsOutline } from "react-icons/io5";
 
 import LoadingSpinner from "./LoadingSpinner";
 import { formatPostDate } from "../../utils/date";
+import { MdModeEdit } from "react-icons/md";
+import { MdDeleteForever } from "react-icons/md";
+
 
 const Post = ({ post }) => {
 	const [comment, setComment] = useState("");
@@ -143,11 +147,21 @@ const Post = ({ post }) => {
 						</span>
 						{isMyPost && (
 							<span className='flex justify-end flex-1'>
-								{!isDeleting && (
-									<FaTrash className='cursor-pointer hover:text-red-500' onClick={handleDeletePost} />
-								)}
+								<div className ='dropdown  '>
+									<div tabIndex={0} role='button' className='m-1'>
+										<IoSettingsOutline className='w-4' />
+									</div>
+									<ul
+										tabIndex={0}
+										className='dropdown-content z-[1] menu p-2 bg-base-100 rounded-box w-52 shadow-custom '
+									>
+										<li>
+											<a onClick ={handleDeletePost} className='text-red-600'> <MdDeleteForever className='text-red-600'  />Excluir</a>
+											<a onClick={"handleEditPost"}> <MdModeEdit />Editar (Soon)</a>
+										</li>
+									</ul>
+								</div>
 
-								{isDeleting && <LoadingSpinner size='sm' />}
 							</span>
 						)}
 					</div>
@@ -162,7 +176,7 @@ const Post = ({ post }) => {
 						)}
 					</div>
 					<div className='flex justify-between mt-3'>
-						<div className='flex gap-3 items-center w-1/2 justify-between'>
+						<div className='flex gap-3 items-center w-1/2 '>
 							<div
 								className='flex gap-1 items-center cursor-pointer group'
 								onClick={() => document.getElementById("comments_modal" + post._id).showModal()}
@@ -232,9 +246,8 @@ const Post = ({ post }) => {
 								)}
 
 								<span
-									className={`text-sm  group-hover:text-pink-500 ${
-										isLiked ? "text-pink-500" : "text-slate-500"
-									}`}
+									className={`text-sm  group-hover:text-pink-500 ${isLiked ? "text-pink-500" : "text-slate-500"
+										}`}
 								>
 									{post.likes.length}
 								</span>

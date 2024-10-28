@@ -1,9 +1,13 @@
 
 
-import { MdHomeFilled } from "react-icons/md";
-import { IoNotifications } from "react-icons/io5";
+
 import { BiChat } from "react-icons/bi"; // Ícone de chat
-import { FaUser } from "react-icons/fa";
+import { CgProfile } from "react-icons/cg";
+import { IoNotificationsOutline } from "react-icons/io5";
+
+import { GrHomeRounded } from "react-icons/gr";
+
+
 import { Link } from "react-router-dom";
 import { BiLogOut } from "react-icons/bi";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -46,7 +50,7 @@ const Sidebar = () => {
 							to='/'
 							className='flex gap-3 items-center hover:bg-stone-900 transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer'
 						>
-							<MdHomeFilled className='w-8 h-8' />
+							<GrHomeRounded className='w-6 h-6' />
 							<span className='text-lg hidden md:block'>Inicio</span>
 						</Link>
 					</li>
@@ -55,7 +59,7 @@ const Sidebar = () => {
 							to='/notifications'
 							className='flex gap-3 items-center hover:bg-stone-900 transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer'
 						>
-							<IoNotifications className='w-6 h-6' />
+							<IoNotificationsOutline className='w-6 h-6' />
 							<span className='text-lg hidden md:block'>Notificações</span>
 						</Link>
 					</li>
@@ -65,7 +69,7 @@ const Sidebar = () => {
 							to={`/profile/${authUser?.username}`}
 							className='flex gap-3 items-center hover:bg-stone-900 transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer'
 						>
-							<FaUser className='w-6 h-6' />
+							<CgProfile className='w-6 h-6' />
 							<span className='text-lg hidden md:block'>Perfil</span>
 						</Link>
 					</li>

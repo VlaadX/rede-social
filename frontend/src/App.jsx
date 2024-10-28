@@ -6,7 +6,9 @@ import SignUpPage from "./pages/SignUpPage";
 import NotificationPage from "./pages/NoficiationPage";
 import ProfilePage from "./pages/ProfilePage";
 import ChatPage from "./pages/ChatPage";
-import ChatRoomPage from "./pages/ChatRoomPage"; // Importe o novo componente
+import ChatRoomPage from "./pages/ChatRoomPage"; 
+import FollowersPage from "./pages/FollowersPage";
+import FollowingPage from "./pages/FollowingPage";
 
 import Sidebar from "./components/common/Sidebar";
 import RightPanel from "./components/common/RightPanel";
@@ -58,6 +60,9 @@ function App() {
 					path='/chat/:username'
 					element={authUser ? <ChatRoomPage authUser={authUser} /> : <Navigate to='/login' />} // Passando authUser como prop
 				/>
+				<Route path="/profile/:username/following" element={<FollowingPage />} />
+				<Route path="/profile/:username/followers" element={<FollowersPage />} />
+
 			</Routes>
 			{authUser && <RightPanel />}
 			<Toaster />
