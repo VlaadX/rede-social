@@ -13,7 +13,7 @@ export const createPost = async (req, res) => {
 		if (!user) return res.status(404).json({ message: "User not found" });
 
 		if (!text && !img) {
-			return res.status(400).json({ error: "Post must have text or image" });
+			return res.status(400).json({ error: "Texto ou Imagem obrigatórios" });
 		}
 
 		if (img) {
@@ -152,8 +152,6 @@ export const getAllPosts = async (req, res) => {
 		res.status(500).json({ error: "Internal server error" });
 	}
 };
-
-
 
 export const getAllLikedPosts= async (req, res) => {
 	const userId = req.params.id;

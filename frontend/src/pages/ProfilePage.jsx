@@ -25,8 +25,6 @@ const ProfilePage = () => {
 	const coverImgRef = useRef(null);
 	const profileImgRef = useRef(null);
 
-	const [showFollowers, setShowFollowers] = useState(false); // Estado para o modal de seguidores
-	const [showFollowing, setShowFollowing] = useState(false); // Estado para o modal de seguindo
 
 
 	const { username } = useParams();
@@ -92,7 +90,7 @@ const ProfilePage = () => {
 								</Link>
 								<div className='flex flex-col'>
 									<p className='font-bold text-lg'>{user?.fullName}</p>
-									<span className='text-sm text-slate-500'>{POSTS?.length} posts</span>
+								{/*	<span className='text-sm text-slate-500'>{POSTS?.length} posts</span> */}
 								</div>
 							</div>
 							{/* COVER IMG */}

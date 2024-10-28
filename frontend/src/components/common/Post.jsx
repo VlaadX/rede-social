@@ -157,7 +157,7 @@ const Post = ({ post }) => {
 									>
 										<li>
 											<a onClick ={handleDeletePost} className='text-red-600'> <MdDeleteForever className='text-red-600'  />Excluir</a>
-											<a onClick={"handleEditPost"}> <MdModeEdit />Editar (Soon)</a>
+											<a className=''> <MdModeEdit />Editar (Soon)</a>
 										</li>
 									</ul>
 								</div>

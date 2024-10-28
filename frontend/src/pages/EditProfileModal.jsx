@@ -38,7 +38,7 @@ const EditProfileModal = ({ authUser }) => {
 				className='btn btn-outline rounded-full btn-sm'
 				onClick={() => document.getElementById("edit_profile_modal").showModal()}
 			>
-				Edit profile
+				Editar Perfil
 			</button>
 			<dialog id='edit_profile_modal' className='modal'>
 				<div className='modal-box border rounded-md border-gray-700 shadow-md'>

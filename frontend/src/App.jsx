@@ -9,6 +9,7 @@ import ChatPage from "./pages/ChatPage";
 import ChatRoomPage from "./pages/ChatRoomPage"; 
 import FollowersPage from "./pages/FollowersPage";
 import FollowingPage from "./pages/FollowingPage";
+import IAPage from "./pages/iaPage";
 
 import Sidebar from "./components/common/Sidebar";
 import RightPanel from "./components/common/RightPanel";
@@ -62,6 +63,8 @@ function App() {
 				/>
 				<Route path="/profile/:username/following" element={<FollowingPage />} />
 				<Route path="/profile/:username/followers" element={<FollowersPage />} />
+
+				<Route path="/ia" element={ <IAPage /> }  />
 
 			</Routes>
 			{authUser && <RightPanel />}
