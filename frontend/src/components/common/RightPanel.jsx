@@ -1,10 +1,24 @@
-import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { Link, useNavigate } from "react-router-dom";
+import { useQuery, } from "@tanstack/react-query";
 import useFollow from "../../hooks/useFollow";
 import RightPanelSkeleton from "../skeletons/RightPanelSkeleton";
 import LoadingSpinner from "./LoadingSpinner";
+import {   useState } from "react";
 
 const RightPanel = () => {
+	const navigate = useNavigate();
+	const [searchQuery, setSearchQuery] = useState("");
+
+	const handleSearchKeyDown = (e) => {
+		if (e.key === "Enter") {
+			e.preventDefault(); 
+			if (searchQuery.trim()) {
+				navigate(`/search?query=${encodeURIComponent(searchQuery.trim())}`);
+			}
+		}
+	};
+
+
 	const { data: suggestedUsers, isLoading } = useQuery({
 		queryKey: ["suggestedUsers"],
 		queryFn: async () => {
@@ -26,8 +40,14 @@ const RightPanel = () => {
 			{/* Conteúdo do painel */}
 			<form className="p-2 rounded-md sticky border border-black">
 				<div className="relative">
-					<input type="search" className="block w-full p-4 ps-10 text-sm text-gray-400 bg-gray-800 border border-gray-700 rounded-full" placeholder="Buscar (EM BREVE)" required />
-				</div>
+				<input
+				type="text"
+				value={searchQuery}
+				onChange={(e) => setSearchQuery(e.target.value)}
+				onKeyDown={handleSearchKeyDown}
+				placeholder="Buscar..."
+				className="block w-full p-2 text-sm text-gray-400 bg-gray-800 border border-gray-700 rounded-full"
+			/>		</div>
 			</form>
 
 			<div className='p-4 rounded-md sticky top-2 border border-gray-700'>

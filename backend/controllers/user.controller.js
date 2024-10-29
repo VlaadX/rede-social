@@ -191,3 +191,17 @@ export const getAllFollowing = async (req, res) => {
 		res.status(500).json({ error: error.message });
 	}
 }
+export const searchUsers = async (req, res) => {
+	try {
+		const query = req.query.query;
+		const users = await User.find({
+			$or: [
+				{ username: { $regex: query, $options: "i" } },
+				{ fullName: { $regex: query, $options: "i" } },
+			],
+		});
+		res.json(users);
+	} catch (error) {
+		res.status(500).json({ error: "Erro ao buscar usuários" });
+	}
+}

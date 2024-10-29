@@ -47,7 +47,7 @@ const NotificationPage = () => {
 	});
 
 	return (
-		<div className='flex flex-col lg:flex-row min-h-screen overflow-hidden'>
+		<div className=' flex-[4_4_0] border-r border-gray-700 lg:flex-row min-h-screen overflow-hidden'>
 			{/* Conteúdo Principal com maior largura e centralizado */}
 			<div className='flex-1 lg:max-w-[800px] w-full mx-auto border-l border-r border-gray-700 min-h-screen px-4 md:px-8'>
 				<div className='flex justify-between items-center p-4 border-b border-gray-700'>

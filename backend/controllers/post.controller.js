@@ -227,3 +227,16 @@ export const getUsersPosts = async (req, res) => {
 		res.status(500).json({ error: "Internal server error" });
 	}
 };
+
+export const searchPosts = async (req, res) => {
+	try {
+		const query = req.query.query;
+		const posts = await Post.find({
+			text: { $regex: query, $options: "i" },
+		}).populate("user", "username fullName profileImg"); // Popula as informações do autor
+
+		res.json(posts);
+	} catch (error) {
+		res.status(500).json({ error: "Erro ao buscar posts" });
+	}
+};
