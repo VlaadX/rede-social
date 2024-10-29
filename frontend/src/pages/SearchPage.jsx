@@ -86,7 +86,7 @@ const SearchPage = () => {
 				<div className="p-4 lg:max-w-3xl mx-auto">
 					{posts.length > 0 ? (
 						posts.map((post) => (
-							<Post key={post._id} post={post} /> // Reutilizando o componente Post
+							<Post key={post._id} post={post} searchTerm={searchQuery} /> // Reutilizando o componente Post
 						))
 					) : (
 						<p className="text-center text-gray-500">Nenhum post encontrado</p>

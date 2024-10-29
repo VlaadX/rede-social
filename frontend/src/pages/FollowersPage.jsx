@@ -100,9 +100,7 @@ const FollowersPage = () => {
                                     </Link>
                                 </div>
                             </div>
-                            <button className={`px-4 py-1 rounded-full text-sm font-semibold ${user.isFollowing ? "bg-gray-700 text-white" : "bg-white text-black"}`}>
-                                {user.isFollowing ? "Seguindo" : "Seguir"}
-                            </button>
+                            
                         </div>
                     ))
                 ) : (

@@ -15,7 +15,7 @@ import { MdModeEdit } from "react-icons/md";
 import { MdDeleteForever } from "react-icons/md";
 
 
-const Post = ({ post }) => {
+const Post = ({ post, searchTerm }) => {
 	const [comment, setComment] = useState("");
 	const { data: authUser } = useQuery({ queryKey: ["authUser"] });
 	const queryClient = useQueryClient();
@@ -127,6 +127,19 @@ const Post = ({ post }) => {
 		likePost();
 	};
 
+	const highlightText = (text, highlight) => {
+		if (!highlight) return text;
+
+		const parts = text.split(new RegExp(`(${highlight})`, "gi"));
+		return parts.map((part, index) =>
+			part.toLowerCase() === highlight.toLowerCase() ? (
+				<span key={index} className="bg-blue-300 text-black font-semibold">{part}</span>
+			) : (
+				part
+			)
+		);
+	};
+
 	return (
 		<>
 			<div className='flex gap-2 items-start p-4 border-b border-gray-700'>
@@ -166,7 +179,7 @@ const Post = ({ post }) => {
 						)}
 					</div>
 					<div className='flex flex-col gap-3 overflow-hidden'>
-						<span>{post.text}</span>
+						<span>{highlightText(post.text, searchTerm)}</span>
 						{post.img && (
 							<img
 								src={post.img}
