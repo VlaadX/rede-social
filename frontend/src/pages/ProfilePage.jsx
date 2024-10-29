@@ -1,22 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-
 import Posts from "../components/common/Posts";
 import ProfileHeaderSkeleton from "../components/skeletons/ProfileHeaderSkeleton";
 import EditProfileModal from "./EditProfileModal";
 import { LiaBirthdayCakeSolid } from "react-icons/lia";
-
-import { POSTS } from "../utils/db/dummy";
-
 import { FaArrowLeft } from "react-icons/fa6";
 import { IoCalendarOutline } from "react-icons/io5";
 import { FaLink } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import { useQuery } from "@tanstack/react-query";
 import { formatBirthday, formatMemberSinceDate } from "../utils/date";
-
 import useFollow from "../hooks/useFollow";
 import useUpdateUserProfile from "../hooks/useUpdateUserProfile";
+import Sidebar from "../components/common/Sidebar"; // Importa a barra lateral para dispositivos móveis
 
 const ProfilePage = () => {
 	const [coverImg, setCoverImg] = useState(null);
@@ -25,8 +21,6 @@ const ProfilePage = () => {
 
 	const coverImgRef = useRef(null);
 	const profileImgRef = useRef(null);
-
-
 
 	const { username } = useParams();
 
@@ -41,21 +35,14 @@ const ProfilePage = () => {
 	} = useQuery({
 		queryKey: ["userProfile"],
 		queryFn: async () => {
-			try {
-				const res = await fetch(`/api/users/profile/${username}`);
-				const data = await res.json();
-				if (!res.ok) {
-					throw new Error(data.error || "Something went wrong");
-				}
-				return data;
-			} catch (error) {
-				throw new Error(error);
-			}
+			const res = await fetch(`/api/users/profile/${username}`);
+			const data = await res.json();
+			if (!res.ok) throw new Error(data.error || "Something went wrong");
+			return data;
 		},
 	});
 
 	const { isUpdatingProfile, updateProfile } = useUpdateUserProfile();
-
 	const isMyProfile = authUser._id === user?._id;
 	const memberSinceDate = formatMemberSinceDate(user?.createdAt);
 	const birthday = formatBirthday(user?.birthday);
@@ -78,11 +65,12 @@ const ProfilePage = () => {
 	}, [username, refetch]);
 
 	return (
-		<>
-			<div className='flex-[4_4_0]  border-r border-gray-700 min-h-screen '>
+		<div className='flex flex-col lg:flex-row min-h-screen overflow-hidden'>
+			{/* Conteúdo Principal */}
+			<div className='flex-1 lg:max-w-[600px] w-full mx-auto border-r border-gray-700 min-h-screen'>
 				{/* HEADER */}
 				{(isLoading || isRefetching) && <ProfileHeaderSkeleton />}
-				{!isLoading && !isRefetching && !user && <p className='text-center text-lg mt-4'>Usuario nao encontrado</p>}
+				{!isLoading && !isRefetching && !user && <p className='text-center text-lg mt-4'>Usuário não encontrado</p>}
 				<div className='flex flex-col'>
 					{!isLoading && !isRefetching && user && (
 						<>
@@ -124,22 +112,22 @@ const ProfilePage = () => {
 									ref={profileImgRef}
 									onChange={(e) => handleImgChange(e, "profileImg")}
 								/>
-							
 
 								<div className='avatar absolute -bottom-16 left-4'>
 									<div className='w-32 rounded-full relative group/avatar'>
-										<img src={profileImg || user?.profileImg || "/avatar-placeholder.png"} />
-										<div className='absolute top-5 right-3 p-1 bg-primary rounded-full group-hover/avatar:opacity-100 opacity-0 cursor-pointer'>
-											{isMyProfile && (
+										<img src={profileImg || user?.profileImg || "/avatar-placeholder.png"} alt="Profile" />
+										{isMyProfile && (
+											<div className='absolute top-5 right-3 p-1 bg-primary rounded-full group-hover/avatar:opacity-100 opacity-0 cursor-pointer'>
 												<MdEdit
 													className='w-4 h-4 text-white'
 													onClick={() => profileImgRef.current.click()}
 												/>
-											)}
-										</div>
+											</div>
+										)}
 									</div>
 								</div>
 							</div>
+
 							<div className='flex justify-end px-4 mt-5'>
 								{isMyProfile && <EditProfileModal authUser={authUser} />}
 								{!isMyProfile && (
@@ -176,17 +164,15 @@ const ProfilePage = () => {
 								<div className='flex gap-2 flex-wrap'>
 									{user?.link && (
 										<div className='flex gap-1 items-center '>
-											<>
-												<FaLink className='w-3 h-3 text-slate-500' />
-												<a
-													href='https://github.com/VlaadX'
-													target='_blank'
-													rel='noreferrer'
-													className='text-sm text-blue-500 hover:underline'
-												>
-													{user?.link}
-												</a>
-											</>
+											<FaLink className='w-3 h-3 text-slate-500' />
+											<a
+												href={user?.link}
+												target='_blank'
+												rel='noreferrer'
+												className='text-sm text-blue-500 hover:underline'
+											>
+												{user?.link}
+											</a>
 										</div>
 									)}
 									<div className='flex gap-2 items-center'>
@@ -208,8 +194,8 @@ const ProfilePage = () => {
 										<span className='text-slate-500 text-s'>Seguidores</span>
 									</Link>
 								</div>
-
 							</div>
+
 							<div className='flex w-full border-b border-gray-700 mt-4'>
 								<div
 									className='flex justify-center flex-1 p-3 hover:bg-secondary transition duration-300 relative cursor-pointer'
@@ -236,7 +222,13 @@ const ProfilePage = () => {
 					<Posts feedType={feedType} username={username} userId={user?._id} />
 				</div>
 			</div>
-		</>
+
+			{/* Barra Inferior Fixa para Dispositivos Móveis */}
+			<div className="fixed bottom-0 left-0 right-0 bg-black border-t border-gray-700 lg:hidden">
+				<Sidebar />
+			</div>
+		</div>
 	);
 };
+
 export default ProfilePage;

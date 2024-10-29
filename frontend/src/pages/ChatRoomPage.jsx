@@ -1,11 +1,13 @@
 import { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
+import { FaArrowLeft } from "react-icons/fa"; // Importa o ícone de seta
 
 const socket = io("https://rede-social-p1fh.onrender.com");
 
 const ChatRoomPage = ({ authUser }) => {
 	const { username } = useParams();
+	const navigate = useNavigate(); // Hook para navegação
 	const [messages, setMessages] = useState([]);
 	const [currentMessage, setCurrentMessage] = useState("");
 	const [recipient, setRecipient] = useState(null);
@@ -89,6 +91,10 @@ const ChatRoomPage = ({ authUser }) => {
 		<div className='flex-[4_4_0] border-l border-r border-gray-700 min-h-screen flex flex-col bg-black'>
 			{recipient && (
 				<div className='flex items-center gap-4 p-4 border-b border-gray-700'>
+					{/* Botão de Voltar */}
+					<button onClick={() => navigate(-1)} className='text-white'>
+						<FaArrowLeft className='w-5 h-5' />
+					</button>
 					<img
 						src={recipient.profileImg || "/avatar-placeholder.png"}
 						alt={recipient.fullName}
