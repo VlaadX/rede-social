@@ -12,12 +12,14 @@ import authRoutes from "./rotas/auth.js";
 import userRoutes from "./rotas/user.js";
 import postRoutes from "./rotas/posts.js";
 import notificationRoutes from "./rotas/notification.js";
+import geminiRoutes from "./rotas/gemini.js";
 
 import connectMongoDB from "./db/connectMongo.js";
 import Message from "./models/message.model.js";
 import messageRoutes from "./rotas/message.js";
 
 dotenv.config();
+
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -49,6 +51,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/messages", messageRoutes);
+app.use("/api/gemini", geminiRoutes);
 
 // Configuração do Socket.IO para o Chat
 io.on("connection", (socket) => {

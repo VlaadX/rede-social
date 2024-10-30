@@ -10,6 +10,7 @@ import ChatRoomPage from "./pages/ChatRoomPage";
 import FollowersPage from "./pages/FollowersPage";
 import FollowingPage from "./pages/FollowingPage";
 import SearchPage from "./pages/SearchPage";
+import IAPage from "./pages/IAPage";
 
 import Sidebar from "./components/common/Sidebar";
 import RightPanel from "./components/common/RightPanel";
@@ -65,6 +66,7 @@ function App() {
 				<Route path="/profile/:username/followers" element={<FollowersPage />} />
 
 				<Route path='/search' element={authUser ? <SearchPage /> : <Navigate to='/login' />} />
+				<Route path="/ia" element={<IAPage />} />
 
 
 			</Routes>

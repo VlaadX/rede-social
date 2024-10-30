@@ -89,13 +89,13 @@ const Sidebar = () => {
 						</li>
 						<li className='flex justify-center md:justify-start'>
 							<Link
-								to='/'
+								to='/ia'
 								className={`flex gap-3 items-center ${
-									isActive("/") ? "bg-stone-900" : "hover:bg-stone-900"
+									isActive("/ia") ? "bg-stone-900" : "hover:bg-stone-900"
 								} transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer`}
 							>
 								<TbHexagonLetterW className='w-6 h-6' />
-								<span className='text-lg hidden md:block'>Wad.IA (EM BREVE)</span>
+								<span className='text-lg hidden md:block'>Wad.IA</span>
 							</Link>
 						</li>
 					</ul>
@@ -144,6 +144,9 @@ const Sidebar = () => {
 				</Link>
 				<Link to='/chat'>
 					<BiChat className={`w-6 h-6 ${isActive("/chat") ? "text-blue-500" : "text-white"}`} />
+				</Link>
+				<Link to='/ia'>
+					<TbHexagonLetterW className={`w-6 h-6 ${isActive("/ia") ? "text-blue-500" : "text-white"}`} />
 				</Link>
 				<BiLogOut
 					className='w-6 h-6 text-white cursor-pointer'
