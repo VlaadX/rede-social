@@ -5,7 +5,7 @@ import LoadingSpinner from "../components/common/LoadingSpinner";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa6";
-import Sidebar from "../components/common/Sidebar"; // Importa a barra lateral para dispositivos móveis
+import Sidebar from "../components/common/Sidebar"; 
 
 const NotificationPage = () => {
 	const queryClient = useQueryClient();
@@ -48,7 +48,7 @@ const NotificationPage = () => {
 
 	return (
 		<div className=' flex-[4_4_0] border-r border-gray-700 lg:flex-row min-h-screen overflow-hidden'>
-			{/* Conteúdo Principal com maior largura e centralizado */}
+
 			<div className='flex-1 lg:max-w-[800px] w-full mx-auto border-l border-r border-gray-700 min-h-screen px-4 md:px-8'>
 				<div className='flex justify-between items-center p-4 border-b border-gray-700'>
 					<p className='font-bold text-lg md:text-xl'>Notificações</p>
@@ -78,11 +78,11 @@ const NotificationPage = () => {
 					notifications.map((notification) => (
 						<div className='border-b border-gray-700 p-4' key={notification._id}>
 							<div className='flex gap-4 items-center'>
-								{/* Ícones de notificação */}
+
 								{notification.type === "follow" && <FaUser className='w-7 h-7 text-primary' />}
 								{notification.type === "like" && <FaHeart className='w-7 h-7 text-red-500' />}
 								
-								{/* Detalhes da notificação */}
+
 								<Link to={`/profile/${notification.from.username}`} className='flex gap-3 items-center'>
 									<div className='avatar'>
 										<div className='w-10 h-10 rounded-full'>
@@ -104,7 +104,7 @@ const NotificationPage = () => {
 				)}
 			</div>
 
-			{/* Barra Inferior Fixa para Dispositivos Móveis */}
+
 			<div className="fixed bottom-0 left-0 right-0 bg-black border-t border-gray-700 lg:hidden">
 				<Sidebar />
 			</div>

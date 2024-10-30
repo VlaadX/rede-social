@@ -55,7 +55,7 @@ const EditProfileModal = ({ authUser }) => {
 								...formData,
 								birthday: formData.birthday ? new Date(formData.birthday) : null,
 							};
-							console.log("FormData enviado:", formattedFormData); // Verifique o valor aqui
+							
 							updateProfile(formattedFormData);
 							
 						}}

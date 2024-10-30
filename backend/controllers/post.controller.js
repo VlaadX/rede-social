@@ -233,7 +233,7 @@ export const searchPosts = async (req, res) => {
 		const query = req.query.query;
 		const posts = await Post.find({
 			text: { $regex: query, $options: "i" },
-		}).populate("user", "username fullName profileImg"); // Popula as informações do autor
+		}).populate("user", "username fullName profileImg"); 
 
 		res.json(posts);
 	} catch (error) {

@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 
 const Sidebar = () => {
 	const queryClient = useQueryClient();
-	const location = useLocation(); // Usado para determinar a rota atual
+	const location = useLocation();
 	const { mutate: logout } = useMutation({
 		mutationFn: async () => {
 			try {

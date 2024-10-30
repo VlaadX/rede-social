@@ -29,7 +29,7 @@ const ChatPage = () => {
             try {
                 const res = await fetch(`/api/messages/unread/${authUser._id}`);
                 const data = await res.json();
-                setUnreadRooms(data); // Stores the room IDs with unread messages
+                setUnreadRooms(data); 
             } catch (error) {
                 console.error("Erro ao buscar mensagens não lidas:", error);
             }
@@ -63,7 +63,7 @@ const ChatPage = () => {
                                 return (
                                     <Link
                                         key={following._id}
-                                        to={`/chat/${following.username}`} // Navigates to the chat page with the follower
+                                        to={`/chat/${following.username}`} 
                                         className='flex items-center gap-3 p-1 rounded-lg hover:bg-black-800 cursor-pointer '
                                     >
                                         <img

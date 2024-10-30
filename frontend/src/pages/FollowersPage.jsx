@@ -6,7 +6,7 @@ import useFollow from "../hooks/useFollow";
 
 const FollowersPage = () => {
     const navigate = useNavigate();
-    const { username, tab } = useParams(); // Recebe o username da URL
+    const { username, tab } = useParams(); 
     const { follow, isPending } = useFollow();
     const [feedType, setFeedType] = useState("followers");
 
@@ -46,7 +46,7 @@ const FollowersPage = () => {
 
     return (
         <div className="flex-[4_4_0] border-r border-gray-700 min-h-screen">
-            {/* Cabeçalho Fixo */}
+
             <div className="sticky top-0 bg-black z-10 flex items-center justify-between p-4 border-b border-gray-700">
                 <div className="flex items-center">
                     <Link to="/" className="text-white mr-4">
@@ -96,7 +96,7 @@ const FollowersPage = () => {
                                     <Link to={`/profile/${user.username}`}>
                                         <h3 className="text-md font-semibold text-white">{user.fullName}</h3>
                                         <p className="text-sm text-gray-400">@{user.username}</p>    
-                                        <p className="text-s text-white-500">{user.bio || "No bio available"}</p>
+                                        <p className="text-s text-white-500">{user.bio || ""}</p>
                                     </Link>
                                 </div>
                             </div>

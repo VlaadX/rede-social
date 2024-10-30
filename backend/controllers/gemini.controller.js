@@ -2,7 +2,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from "dotenv";
 dotenv.config();
 
-// Inicialize o cliente com sua chave de API
+
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 
@@ -32,24 +32,24 @@ export const geminiChat = async (req, res) => {
                 parts: [{ text: message.content }]
             })),
             generationConfig: {
-                maxOutputTokens: 100,  // Configura o comprimento da resposta
+                maxOutputTokens: 100,  
             },
         });
 
-        // Envie a mensagem do usuário para o chat e obtenha a resposta
+
         const result = await chat.sendMessage(question);
         const response = await result.response;
         const botResponse = response.text();
 
-        // Adicione a resposta da IA ao histórico, com o papel "model" para representar a resposta do modelo
+
         conversationHistory.push({ role: "model", content: botResponse });
 
-        // Limitar o tamanho do histórico para evitar sobrecarga (mantendo as últimas 20 mensagens)
+  
         if (conversationHistory.length > 20) {
             conversationHistory = conversationHistory.slice(-20);
         }
 
-        // Retorne a resposta para o frontend
+
         res.json({ answer: botResponse });
     } catch (error) {
         console.error("Erro na API do Gemini:", error);

@@ -32,7 +32,7 @@ const SignUpPage = () => {
 
 				const data = await res.json();
 				if (!res.ok) throw new Error(data.error || "Failed to create account");
-				console.log(data);
+
 				return data;
 			} catch (error) {
 				console.error(error);
@@ -43,14 +43,14 @@ const SignUpPage = () => {
 			toast.success("Account created successfully");
 
 			{
-				/* Added this line below, after recording the video. I forgot to add this while recording, sorry, thx. */
+				
 			}
 			queryClient.invalidateQueries({ queryKey: ["authUser"] });
 		},
 	});
 
 	const handleSubmit = (e) => {
-		e.preventDefault(); // page won't reload
+		e.preventDefault(); 
 		mutate(formData);
 	};
 
@@ -66,7 +66,7 @@ const SignUpPage = () => {
 			<div className='flex-1 flex flex-col justify-center items-center'>
 				<form className='lg:w-2/3  mx-auto md:mx-20 flex gap-4 flex-col' onSubmit={handleSubmit}>
 					
-					<h1 className='text-4xl font-extrabold text-white'>Nah I'd Win</h1>
+					<h1 className='text-4xl font-extrabold text-white'>Cadastre-se</h1>
 					<label className='input input-bordered rounded flex items-center gap-2'>
 						<MdOutlineMail />
 						<input

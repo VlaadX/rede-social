@@ -14,6 +14,7 @@ const SearchPage = () => {
 	const [posts, setPosts] = useState([]);
 
 	useEffect(() => {
+
 		// Função para buscar usuários com o termo no corpo
 		const fetchUsers = async () => {
 			const res = await fetch(`/api/users/search?query=${encodeURIComponent(searchQuery)}`);
@@ -26,7 +27,7 @@ const SearchPage = () => {
 			const res = await fetch(`/api/posts/search?query=${encodeURIComponent(searchQuery)}`);
 			const data = await res.json();
 			setPosts(data);
-            console.log(data);
+  
 		};
 
 		if (searchQuery) {
@@ -37,7 +38,7 @@ const SearchPage = () => {
 
 	return (
 		<div className="flex-[4_4_0] border-r border-gray-700 min-h-screen">
-			{/* Tabs fixas no topo */}
+		
 			<div className="sticky top-0 z-10 flex border-b border-gray-700 bg-black">
 				<button
 					className={`flex-1 p-4 ${activeTab === "users" ? "border-b-2 border-blue-500" : ""}`}

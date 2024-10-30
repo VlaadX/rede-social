@@ -12,7 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import { formatBirthday, formatMemberSinceDate } from "../utils/date";
 import useFollow from "../hooks/useFollow";
 import useUpdateUserProfile from "../hooks/useUpdateUserProfile";
-import Sidebar from "../components/common/Sidebar"; // Importa a barra lateral para dispositivos móveis
+import Sidebar from "../components/common/Sidebar"; 
 
 const ProfilePage = () => {
 	const [coverImg, setCoverImg] = useState(null);
@@ -68,7 +68,7 @@ const ProfilePage = () => {
 		<div className='flex flex-col lg:flex-row min-h-screen overflow-hidden'>
 			{/* Conteúdo Principal */}
 			<div className='flex-1 lg:max-w-[600px] w-full mx-auto border-r border-gray-700 min-h-screen'>
-				{/* HEADER */}
+
 				{(isLoading || isRefetching) && <ProfileHeaderSkeleton />}
 				{!isLoading && !isRefetching && !user && <p className='text-center text-lg mt-4'>Usuário não encontrado</p>}
 				<div className='flex flex-col'>
@@ -82,7 +82,7 @@ const ProfilePage = () => {
 									<p className='font-bold text-lg'>{user?.fullName}</p>
 								</div>
 							</div>
-							{/* COVER IMG */}
+
 							<div className='relative group/cover'>
 								<img
 									src={coverImg || user?.coverImg || "/cover.png"}
